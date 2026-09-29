@@ -3,461 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHIAR FAWAD — SJ2005 // Personal System</title>
-<meta name="description" content="Shiar Fooad Haweez — Software & Technical Operations Specialist. Erbil, Kurdistan.">
+<title>SHIAR HAWEEZ — Never Stop Building</title>
+<meta name="description" content="Shiar Fooad Haweez — Software & Technical Operations Specialist. Erbil, Kurdistan. Never stop building.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#07090c;
-  --bg2:#0c1016;
-  --panel:#10161f;
-  --line:#1e2a38;
-  --txt:#dce8f2;
-  --dim:#7d93a8;
-  --green:#00ff9c;
-  --amber:#ffb800;
-  --cyan:#4dd8ff;
-  --red:#ff4d5e;
+  --paper:#f4f0e6;      /* off-white */
+  --paper2:#ece7d9;
+  --ink:#111110;
+  --red:#e4002b; /* expedition red */
+  --dim:#6d675c;
+  --line:#c9c2b2;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --sans:'Space Grotesk',system-ui,sans-serif;
+  --sans:'Archivo',system-ui,sans-serif;
+  --disp:'Anton',var(--sans);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--txt);
-  font-family:var(--sans);
-  overflow-x:hidden;
-  line-height:1.6;
-}
-::selection{background:var(--green);color:#000}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;overflow-x:hidden}
+::selection{background:var(--red);color:#fff}
+img{max-width:100%}
+a{color:inherit}
 
-/* ---------- scanlines + grain overlays ---------- */
-body::before{
-  content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.13) 2px 4px);
-  mix-blend-mode:multiply;
-}
-body::after{
-  content:"";position:fixed;inset:0;z-index:9997;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-}
-/* blinking rec dot corner */
-.corner-ui{position:fixed;z-index:9996;font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--dim);pointer-events:none;text-transform:uppercase}
-.corner-ui.tl{top:14px;left:16px}
-.corner-ui.tr{top:14px;right:16px}
-.corner-ui.bl{bottom:14px;left:16px}
-.corner-ui .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px;animation:blink 1.2s steps(1) infinite;vertical-align:middle}
-@keyframes blink{50%{opacity:0}}
+/* ---------- topo background ---------- */
+.topo{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.topo svg{width:100%;height:100%}
+.page{position:relative;z-index:1}
 
-/* ---------- BOOT SCREEN ---------- */
-#boot{
-  position:fixed;inset:0;z-index:10000;background:var(--bg);
-  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
-  padding:8vh 8vw;font-family:var(--mono);transition:opacity .6s ease,visibility .6s;
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:50;background:var(--ink);color:var(--paper);
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:14px 5vw;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
 }
-#boot.done{opacity:0;visibility:hidden}
-#boot .log{font-size:13px;color:var(--dim);white-space:pre-wrap;min-height:150px}
-#boot .log .ok{color:var(--green)}
-#boot .log .warn{color:var(--amber)}
-#boot .bar{width:min(420px,80vw);height:6px;border:1px solid var(--line);margin-top:22px;position:relative}
-#boot .bar i{position:absolute;inset:1px;transform-origin:left;background:var(--green);transform:scaleX(0);animation:load 2.6s ease forwards}
-@keyframes load{to{transform:scaleX(1)}}
-#boot .pct{margin-top:10px;font-size:11px;color:var(--green)}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+.topbar .tri{width:16px;height:16px;background:var(--red);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.topbar nav{display:flex;gap:26px;flex-wrap:wrap}
+.topbar nav a{text-decoration:none;transition:color .15s}
+.topbar nav a:hover{color:var(--red)}
 
-/* ---------- HERO ---------- */
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
-  padding:12vh 8vw 8vh;position:relative;
+/* ---------- marquee ---------- */
+.marquee{
+  background:var(--red);color:#fff;overflow:hidden;white-space:nowrap;
+  border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);
+  padding:9px 0;font-family:var(--disp);font-size:clamp(.95rem,2vw,1.25rem);letter-spacing:.08em;text-transform:uppercase
 }
-.hero .tag{font-family:var(--mono);color:var(--green);font-size:12px;letter-spacing:.35em;text-transform:uppercase;margin-bottom:26px;display:flex;align-items:center;gap:12px}
-.hero .tag::before{content:"▸";color:var(--amber)}
-.glitch{
-  font-family:var(--mono);font-weight:800;
-  font-size:clamp(3.2rem,11vw,9.5rem);line-height:.95;letter-spacing:-.02em;
-  color:var(--txt);position:relative;text-transform:uppercase;
-}
-.glitch .g{position:relative;display:inline-block}
-.glitch .g::before,.glitch .g::after{
-  content:attr(data-t);position:absolute;inset:0;overflow:hidden;clip-path:inset(0 0 0 0);
-}
-.glitch .g::before{color:var(--cyan);animation:gl1 3.2s infinite linear alternate-reverse}
-.glitch .g::after{color:var(--red);animation:gl2 2.7s infinite linear alternate-reverse}
-@keyframes gl1{
-  0%,86%,100%{transform:none;clip-path:inset(0 0 0 0);opacity:0}
-  87%{transform:translate(-4px,-2px);clip-path:inset(0 0 62% 0);opacity:.9}
-  90%{transform:translate(3px,1px);clip-path:inset(58% 0 8% 0);opacity:.9}
-  93%{transform:none;opacity:0}
-}
-@keyframes gl2{
-  0%,80%,100%{transform:none;opacity:0}
-  82%{transform:translate(4px,2px);clip-path:inset(70% 0 0 0);opacity:.8}
-  85%{transform:translate(-3px,-1px);clip-path:inset(12% 0 55% 0);opacity:.8}
-  88%{transform:none;opacity:0}
-}
-.hero .sub{
-  margin-top:26px;font-size:clamp(1.05rem,2.4vw,1.5rem);color:var(--txt);max-width:640px;font-weight:500;
-}
-.hero .sub em{color:var(--green);font-style:normal}
-.hero .meta{
-  margin-top:34px;display:flex;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:11px;
-}
-.hero .meta span{
-  border:1px solid var(--line);padding:7px 14px;border-radius:999px;color:var(--dim);
-  letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.02)
-}
-.hero .meta span b{color:var(--green);font-weight:700}
-.hero .cta{margin-top:44px;display:flex;gap:16px;flex-wrap:wrap}
-.btn{
-  font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;
-  padding:15px 28px;border:1px solid var(--green);color:var(--green);background:transparent;
-  text-decoration:none;cursor:pointer;position:relative;transition:.2s;overflow:hidden
-}
-.btn:hover{background:var(--green);color:#000;box-shadow:0 0 30px rgba(0,255,156,.35)}
-.btn.ghost{border-color:var(--line);color:var(--txt)}
-.btn.ghost:hover{background:var(--txt);border-color:var(--txt);color:#000;box-shadow:0 0 30px rgba(220,232,242,.2)}
-/* big scroll hint */
-.scroll-hint{
-  position:absolute;bottom:34px;left:50%;transform:translateX(-50%);
-  font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;
-  animation:bob 1.8s ease-in-out infinite;
-}
-@keyframes bob{50%{transform:translateX(-50%) translateY(8px);opacity:.4}}
+.marquee .track{display:inline-block;animation:roll 26s linear infinite}
+.marquee .track span{margin:0 34px}
+.marquee .track b{color:var(--ink);margin:0 10px}
+@keyframes roll{to{transform:translateX(-50%)}}
 
-/* ---------- common section shell ---------- */
-section{padding:12vh 8vw;border-top:1px solid var(--line);position:relative}
-.sec-head{margin-bottom:56px}
-.sec-head .num{font-family:var(--mono);color:var(--amber);font-size:12px;letter-spacing:.3em;text-transform:uppercase;display:block;margin-bottom:10px}
-.sec-head h2{font-family:var(--mono);font-size:clamp(1.8rem,4.5vw,3.2rem);text-transform:uppercase;letter-spacing:-.01em}
-.sec-head h2 span{color:var(--green)}
-.sec-head .rule{height:3px;width:70px;background:var(--green);margin-top:16px}
+/* ---------- hero ---------- */
+.hero{padding:10vh 5vw 9vh;position:relative}
+.hero .kicker{
+  display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:28px;flex-wrap:wrap
+}
+.hero .kicker .patch{
+  border:2px solid var(--ink);padding:5px 12px;color:var(--ink);background:var(--paper);
+  box-shadow:3px 3px 0 var(--ink)
+}
+.hero h1{
+  font-family:var(--disp);line-height:.88;text-transform:uppercase;letter-spacing:.005em;
+  font-size:clamp(4rem,14vw,11.5rem);
+}
+.hero h1 .row2{color:transparent;-webkit-text-stroke:2.5px var(--ink)}
+.hero h1 .row2 .red{color:var(--red);-webkit-text-stroke:0}
+.hero .tagline{
+  margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap
+}
+.hero .tagline .big{
+  font-family:var(--disp);font-size:clamp(1.1rem,3vw,1.7rem);text-transform:uppercase;letter-spacing:.06em;
+  background:var(--ink);color:var(--paper);padding:8px 18px
+}
+.hero .sub{max-width:660px;margin-top:26px;font-size:1.08rem;color:#3d3a33}
+.hero .sub strong{background:var(--red);color:#fff;padding:0 6px}
+.hero .stats{
+  margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+  background:var(--ink);border:3px solid var(--ink)
+}
+.hero .stats .cell{background:var(--paper);padding:18px 18px 16px}
+.hero .stats .cell:hover{background:var(--paper2)}
+.hero .stats .num{font-family:var(--disp);font-size:2rem;line-height:1}
+.hero .stats .num i{color:var(--red);font-style:normal}
+.hero .stats .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-top:6px}
 
-/* ---------- ABOUT ---------- */
-.about-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:60px;align-items:start}
-.about-grid p{color:var(--dim);font-size:1.06rem;margin-bottom:20px}
-.about-grid p strong{color:var(--txt)}
-.about-grid p em{color:var(--green);font-style:normal}
-.about-card{
-  border:1px solid var(--line);background:var(--panel);padding:28px;font-family:var(--mono);font-size:12.5px;
-  position:relative;
+/* ---------- section shell ---------- */
+section{padding:11vh 5vw;border-top:3px solid var(--ink);position:relative;background:transparent}
+.sec-head{margin-bottom:52px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.sec-head .no{
+  font-family:var(--mono);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:12px;margin-bottom:12px
 }
-.about-card::before{content:"ID_CARD // v2026.09";position:absolute;top:-9px;left:18px;background:var(--bg);padding:0 10px;font-size:10px;color:var(--amber);letter-spacing:.2em}
-.about-card .row{display:flex;justify-content:space-between;gap:20px;padding:9px 0;border-bottom:1px dashed var(--line)}
-.about-card .row:last-child{border:none}
-.about-card .k{color:var(--dim)}
-.about-card .v{color:var(--txt);text-align:right}
-.about-card .v.g{color:var(--green)}
-.ascii{display:block;white-space:pre;font-size:10px;line-height:1.25;color:var(--green);margin-bottom:18px;overflow-x:auto}
+.sec-head .no::after{content:"";height:2px;width:60px;background:var(--red)}
+.sec-head h2{
+  font-family:var(--disp);font-size:clamp(2.4rem,6vw,4.6rem);text-transform:uppercase;line-height:.95;letter-spacing:.01em
+}
+.sec-head .alt{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-align:right
+}
 
-/* ---------- SKILLS ---------- */
-.skills-cloud{display:flex;flex-wrap:wrap;gap:12px}
-.chip{
-  font-family:var(--mono);font-size:13px;padding:12px 20px;border:1px solid var(--line);
-  background:var(--panel);position:relative;transition:.18s;cursor:default;
+/* ---------- about ---------- */
+.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.about-grid .lead{font-size:1.5rem;font-weight:600;line-height:1.35;letter-spacing:-.01em;margin-bottom:22px}
+.about-grid .lead em{font-style:normal;color:var(--red)}
+.about-grid p{color:#4a463d;margin-bottom:18px;font-size:1.03rem}
+.about-grid p strong{color:var(--ink)}
+.datasheet{border:3px solid var(--ink);background:#faf7ef;box-shadow:8px 8px 0 var(--ink)}
+.datasheet .ds-head{background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;padding:10px 16px;display:flex;justify-content:space-between}
+.datasheet .ds-head .r{color:var(--red)}
+.datasheet .rows{padding:8px 16px 16px}
+.datasheet .row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.datasheet .row:last-child{border-bottom:none}
+.datasheet .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.datasheet .v{font-weight:600;text-align:right}
+.datasheet .v.r{color:var(--red)}
+.datasheet .stamp{
+  margin:6px 16px 18px;border:2px solid var(--red);color:var(--red);display:inline-block;
+  font-family:var(--disp);font-size:.85rem;letter-spacing:.14em;padding:5px 12px;transform:rotate(-3deg);text-transform:uppercase
 }
-.chip::before{content:"";position:absolute;left:6px;top:6px;width:5px;height:5px;background:var(--green);opacity:0;transition:.18s}
-.chip:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,255,156,.12)}
-.chip:hover::before{opacity:1}
-.chip b{color:var(--dim);font-weight:400;margin-right:8px;font-size:10px;letter-spacing:.15em}
-.skill-groups{margin-top:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
-.sg{border:1px solid var(--line);background:var(--panel);padding:26px}
-.sg h3{font-family:var(--mono);font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
-.sg p{color:var(--dim);font-size:.95rem}
 
-/* ---------- PROJECTS ---------- */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px}
-.proj{
-  border:1px solid var(--line);background:var(--panel);padding:0;position:relative;overflow:hidden;
-  transition:.25s;display:flex;flex-direction:column;
+/* ---------- gear / skills ---------- */
+.gear-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:0;border:3px solid var(--ink);background:var(--ink);gap:2px}
+.gear-grid .g{background:var(--paper);padding:30px 26px;transition:.18s}
+.gear-grid .g:hover{background:var(--ink)}
+.gear-grid .g:hover *{color:var(--paper)!important}
+.gear-grid .g:hover .tag-list span{border-color:var(--paper)}
+.gear-grid h3{font-family:var(--disp);font-size:1.35rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
+.gear-grid .sub{font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+.gear-grid p{font-size:.94rem;color:#4a463d;margin-bottom:18px}
+.tag-list{display:flex;flex-wrap:wrap;gap:8px}
+.tag-list span{
+  font-family:var(--mono);font-size:11px;border:1.5px solid var(--ink);padding:4px 10px;letter-spacing:.06em;transition:.15s
 }
-.proj:hover{border-color:var(--green);transform:translateY(-5px)}
-.proj .ph{
-  height:150px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-.proj .ph .big{font-family:var(--mono);font-weight:800;font-size:56px;color:rgba(0,255,156,.1);position:absolute;user-select:none}
-.proj .ph .icon{font-size:44px;position:relative;z-index:2;filter:saturate(1.2)}
-.proj .body{padding:26px;flex:1;display:flex;flex-direction:column}
-.proj .cat{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--amber);text-transform:uppercase;margin-bottom:10px}
-.proj h3{font-size:1.3rem;margin-bottom:12px;letter-spacing:.01em}
-.proj p{color:var(--dim);font-size:.95rem;margin-bottom:18px}
-.proj .stack{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px}
-.proj .stack span{font-family:var(--mono);font-size:10px;color:var(--cyan);border:1px solid var(--line);padding:4px 10px;border-radius:999px;letter-spacing:.1em}
-.proj a{margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--green);text-decoration:none;text-transform:uppercase;align-self:flex-start}
-.proj a:hover{text-decoration:underline}
-.proj .corner{position:absolute;top:12px;right:14px;font-family:var(--mono);font-size:10px;color:var(--dim)}
 
-/* ---------- CV ---------- */
-#cv .cv-wrap{
-  border:1px solid var(--line);background:var(--panel);padding:0;max-width:920px;
+/* ---------- expeditions / projects ---------- */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px}
+.exp{
+  border:3px solid var(--ink);background:#faf7ef;position:relative;
+  transition:transform .18s,box-shadow .18s;
 }
-.cv-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.cv-top .t{font-family:var(--mono);font-size:11px;letter-spacing:.25em;color:var(--amber);text-transform:uppercase}
+.exp:hover{transform:translate(-4px,-4px);box-shadow:8px 8px 0 var(--red)}
+.exp .exp-head{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  border-bottom:3px solid var(--ink);padding:12px 20px;background:var(--paper2)
+}
+.exp .exp-head .id{font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--dim)}
+.exp .exp-head .flag{width:14px;height:14px;background:var(--red);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.exp .body{padding:22px 22px 26px}
+.exp .cat{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.exp h3{font-family:var(--disp);font-size:1.55rem;text-transform:uppercase;letter-spacing:.02em;margin-bottom:10px;line-height:1.05}
+.exp p{color:#4a463d;font-size:.95rem;margin-bottom:18px}
+.exp .route{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.exp .route span{font-family:var(--mono);font-size:10px;background:var(--ink);color:var(--paper);padding:4px 10px;letter-spacing:.1em}
+.exp a{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--red);padding-bottom:2px}
+.exp a:hover{color:var(--red)}
+
+/* ---------- dossier / cv ---------- */
+#cv{background:var(--paper2)}
+.cv-wrap{border:3px solid var(--ink);background:#faf7ef;box-shadow:10px 10px 0 var(--ink);max-width:960px}
+.cv-top{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  border-bottom:3px solid var(--ink);padding:14px 24px;background:var(--ink);color:var(--paper)
+}
+.cv-top .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.3em;text-transform:uppercase}
+.cv-top .t b{color:var(--red)}
 .cv-top .a{display:flex;gap:12px;flex-wrap:wrap}
 .mini-btn{
-  font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:8px 16px;border:1px solid var(--line);
-  color:var(--txt);text-decoration:none;background:transparent;cursor:pointer;text-transform:uppercase;transition:.2s;display:inline-block
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;padding:9px 16px;border:2px solid var(--paper);
+  color:var(--paper);text-decoration:none;background:transparent;cursor:pointer;text-transform:uppercase;transition:.15s;display:inline-block
 }
-.mini-btn:hover{border-color:var(--green);color:var(--green)}
-.mini-btn.primary{border-color:var(--green);color:var(--green)}
-.mini-btn.primary:hover{background:var(--green);color:#000}
-.cv-doc{padding:44px 44px 52px}
-.cv-doc .name{font-family:var(--mono);font-weight:800;font-size:clamp(1.7rem,4vw,2.6rem);text-transform:uppercase}
-.cv-doc .role{color:var(--green);font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin:6px 0 18px}
-.cv-doc .contacts{font-family:var(--mono);font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:8px}
-.cv-doc .contacts a{color:var(--cyan);text-decoration:none}
-.cv-doc .contacts a:hover{text-decoration:underline}
-.cv-doc .langs{font-size:12.5px;color:var(--dim);margin-bottom:30px}
-.cv-doc .langs b{color:var(--txt);font-weight:500}
+.mini-btn:hover{background:var(--red);border-color:var(--red);color:#fff}
+.mini-btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.mini-btn.primary:hover{background:#fff;border-color:#fff;color:var(--red)}
+.cv-doc{padding:46px 46px 54px}
+.cv-doc .name{font-family:var(--disp);font-size:clamp(2rem,4.5vw,3rem);text-transform:uppercase;line-height:.95}
+.cv-doc .role{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin:10px 0 20px}
+.cv-doc .contacts{font-family:var(--mono);font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:10px}
+.cv-doc .contacts a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.cv-doc .contacts a:hover{color:var(--red);border-color:var(--red)}
+.cv-doc .langs{font-size:.95rem;color:#4a463d;margin-bottom:8px}
 .cv-doc h4{
-  font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);
-  margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px
+  font-family:var(--disp);font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;
+  margin:36px 0 14px;padding-bottom:8px;border-bottom:3px solid var(--ink);display:flex;align-items:center;gap:10px
 }
-.cv-doc h4::before{content:"█";color:var(--green);font-size:9px}
-.cv-doc p{color:var(--dim);font-size:.95rem;margin-bottom:10px}
-.cv-doc ul{list-style:none;color:var(--dim);font-size:.95rem}
-.cv-doc ul li{padding-left:20px;position:relative;margin-bottom:8px}
-.cv-doc ul li::before{content:"›";position:absolute;left:2px;color:var(--green);font-weight:700}
-.cv-doc .job{margin-bottom:22px}
+.cv-doc h4::before{content:"";width:12px;height:12px;background:var(--red)}
+.cv-doc p{color:#4a463d;font-size:.96rem;margin-bottom:10px}
+.cv-doc ul{list-style:none;color:#4a463d;font-size:.96rem}
+.cv-doc ul li{padding-left:22px;position:relative;margin-bottom:8px}
+.cv-doc ul li::before{content:"▲";position:absolute;left:0;top:1px;font-size:9px;color:var(--red)}
+.cv-doc .job{margin-bottom:24px}
 .cv-doc .job .jt{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.cv-doc .job .jt h5{font-size:1.05rem;color:var(--txt)}
-.cv-doc .job .jt time{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
-.cv-doc .job .org{font-family:var(--mono);font-size:12px;color:var(--green);margin:2px 0 8px}
+.cv-doc .job .jt h5{font-size:1.06rem;font-weight:700}
+.cv-doc .job .jt time{font-family:var(--mono);font-size:10.5px;color:var(--dim);white-space:nowrap;text-transform:uppercase;letter-spacing:.1em}
+.cv-doc .job .org{font-family:var(--mono);font-size:12px;color:var(--red);margin:2px 0 10px;letter-spacing:.08em}
 .cv-doc .edu{margin-bottom:16px}
-.cv-doc .edu h5{font-size:1.02rem;color:var(--txt)}
-.cv-doc .edu .org{font-family:var(--mono);font-size:12px;color:var(--green);margin:2px 0}
-.cv-doc .edu time{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.cv-doc .edu h5{font-size:1.02rem;font-weight:700}
+.cv-doc .edu .org{font-family:var(--mono);font-size:12px;color:var(--red);margin:2px 0;letter-spacing:.08em}
+.cv-doc .edu time{font-family:var(--mono);font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 
-/* ---------- CONTACT ---------- */
-#contact{background:var(--bg2)}
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+/* ---------- summit / contact ---------- */
+#contact .summit{
+  font-family:var(--disp);font-size:clamp(2.2rem,7vw,5.5rem);text-transform:uppercase;line-height:.95;margin-bottom:50px
+}
+#contact .summit .o{color:transparent;-webkit-text-stroke:2px var(--ink)}
+#contact .summit .r{color:var(--red)}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2px;background:var(--ink);border:3px solid var(--ink)}
 .cbox{
-  border:1px solid var(--line);background:var(--panel);padding:34px 28px;text-decoration:none;
-  display:block;transition:.22s;position:relative;overflow:hidden;
+  background:var(--paper);padding:32px 26px;text-decoration:none;transition:.18s;display:block
 }
-.cbox:hover{border-color:var(--green);transform:translateY(-4px)}
-.cbox .ic{font-size:26px;margin-bottom:14px}
+.cbox:hover{background:var(--ink)}
+.cbox:hover .val{color:#fff}
+.cbox:hover .lbl{color:var(--red)}
+.cbox .ic{width:42px;height:42px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:19px;background:var(--paper)}
+.cbox:hover .ic{background:var(--red);border-color:var(--red)}
 .cbox .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:6px}
-.cbox .val{color:var(--txt);font-size:1.05rem;word-break:break-all}
-.cbox:hover .val{color:var(--green)}
-.bigline{
-  margin-top:70px;text-align:center;font-family:var(--mono);font-weight:800;
-  font-size:clamp(1.6rem,5vw,3.4rem);text-transform:uppercase;letter-spacing:.02em;color:var(--line);
-  transition:color .3s;user-select:none;cursor:default
-}
-.bigline:hover{color:var(--green)}
-footer{
-  padding:40px 8vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;
-  font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.15em;flex-wrap:wrap;gap:10px;text-transform:uppercase
-}
-footer a{color:var(--dim);text-decoration:none}
-footer a:hover{color:var(--green)}
+.cbox .val{font-weight:700;font-size:1.05rem;word-break:break-all}
 
-/* ---------- reveal on scroll ---------- */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+/* ---------- footer ---------- */
+footer{
+  border-top:3px solid var(--ink);background:var(--ink);color:var(--paper);
+  padding:34px 5vw;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase
+}
+footer a{text-decoration:none;color:var(--paper)}
+footer a:hover{color:var(--red)}
+footer .tri{display:inline-block;width:10px;height:10px;background:var(--red);clip-path:polygon(50% 0,100% 100%,0 100%);margin-right:8px;vertical-align:middle}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
 .rv.in{opacity:1;transform:none}
 
-/* ---------- terminal cursor follower ---------- */
-#torch{
-  position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;
-  background:radial-gradient(circle,rgba(0,255,156,.06) 0%,transparent 60%);
-  transform:translate(-50%,-50%);transition:opacity .3s
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff}
+  .topbar,.marquee,.topo,#contact,#about,#skills,#projects,footer,.cv-top .a{display:none!important}
+  .cv-wrap{border:1px solid #999;box-shadow:none;max-width:100%}
+  .cv-doc{padding:10px}
+  .cv-doc .name{color:#000}
+  .cv-doc h4{border-color:#000}
+  .cv-doc h4::before{background:#000}
+  .cv-doc .role,.cv-doc .job .org,.cv-doc .edu .org{color:#b00}
+  .cv-doc p,.cv-doc ul li,.cv-doc .langs,.cv-doc time,.cv-doc .jt time{color:#333}
+  .cv-doc ul li::before{color:#000}
+  section{padding:0;border:none}
 }
 @media (max-width:840px){
   .about-grid{grid-template-columns:1fr}
-  .cv-doc{padding:30px 20px 40px}
-  #torch{display:none}
-  .corner-ui.bl{display:none}
-}
-@media print{
-  body::before,body::after,#torch,.corner-ui,.scroll-hint,#boot,.hero .cta{display:none!important}
-  body{background:#fff;color:#111}
-  section{border:none;padding:0}
-  #cv .cv-wrap{border:1px solid #ccc;max-width:100%}
-  .cv-top{display:none}
-  .cv-doc .name{color:#000}
-  .cv-doc .role{color:#065}
-  .cv-doc h4{color:#333;border-color:#ccc}
-  .cv-doc h4::before{content:""}
-  .cv-doc p,.cv-doc ul li,.cv-doc .langs,.cv-doc time,.cv-doc .jt time{color:#333}
-  .cv-doc .job .org,.cv-doc .edu .org{color:#063}
-  .cv-doc ul li::before{color:#063}
-  .cv-doc .contacts{color:#333}
-  .cv-doc .contacts a{color:#06c}
-  #about,#skills,#projects,#contact,footer{display:none}
-  #cv{padding:0}
+  .cv-doc{padding:28px 20px}
+  .topbar nav{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ====== BOOT ====== -->
-<div id="boot" aria-hidden="true">
-  <div class="log" id="bootlog"></div>
-  <div class="bar"><i></i></div>
-  <div class="pct" id="bootpct">0%</div>
+<!-- topographic contours -->
+<div class="topo" aria-hidden="true">
+<svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="#c9c2b2" stroke-width="1">
+    <path d="M-50,120 C200,60 380,180 640,120 S1100,40 1490,140"/>
+    <path d="M-50,170 C220,100 400,230 660,165 S1120,90 1490,195"/>
+    <path d="M-50,225 C240,150 430,285 690,215 S1150,140 1490,250"/>
+    <path d="M-50,560 C180,500 420,640 700,560 S1160,480 1490,590"/>
+    <path d="M-50,620 C200,555 450,700 730,620 S1190,545 1490,660"/>
+    <path d="M-50,680 C230,615 470,765 750,685 S1210,610 1490,730"/>
+  </g>
+  <g fill="none" stroke="#e4002b" stroke-width="1" opacity=".35">
+    <path d="M-50,340 C260,280 500,410 780,340 S1240,265 1490,375" stroke-dasharray="6 5"/>
+    <path d="M-50,470 C240,410 480,540 760,470 S1220,395 1490,505" stroke-dasharray="6 5"/>
+  </g>
+</svg>
 </div>
 
-<div class="corner-ui tl"><span class="dot"></span>LIVE&nbsp;//&nbsp;SJ2005.SYS</div>
-<div class="corner-ui tr">SYS.TIME <span id="clock">--:--:--</span></div>
-<div class="corner-ui bl">ESC-BIH, KURDISTAN&nbsp;·&nbsp;36.19°N 44.01°E</div>
-<div id="torch"></div>
+<div class="page">
+
+<!-- ====== TOP BAR ====== -->
+<div class="topbar">
+  <span class="brand"><span class="tri"></span>SJ2005 · FIELD MANUAL</span>
+  <nav>
+    <a href="#about">The Climb</a>
+    <a href="#skills">Gear</a>
+    <a href="#projects">Expeditions</a>
+    <a href="#cv">Dossier</a>
+    <a href="#contact">Summit</a>
+  </nav>
+</div>
+
+<!-- ====== MARQUEE ====== -->
+<div class="marquee" aria-hidden="true">
+  <div class="track" id="track">
+    <span>Never stop building</span><b>▲</b><span>Erbil · 36.19°N 44.01°E</span><b>▲</b><span>Software × Hardware × Operations</span><b>▲</b><span>Est. 2005</span><b>▲</b>
+  </div>
+</div>
 
 <!-- ====== HERO ====== -->
 <header class="hero">
-  <div class="tag">personal system v2.0 — online</div>
-  <h1 class="glitch" data-t="SHIAR HAWEEZ">
-    <span class="g" data-t="SHIAR">SHIAR</span><br>
-    <span class="g" data-t="HAWEEZ">HAWEEZ</span>
+  <div class="kicker">
+    <span class="patch">EXPEDITION 2026</span>
+    <span>BASECAMP — ERBIL, KURDISTAN</span>
+    <span>ELEV. 402M</span>
+  </div>
+  <h1>
+    SHIAR<br>
+    <span class="row2">HA<span class="red">W</span>EEZ</span>
   </h1>
-  <p class="sub">I don't just write code. I build the whole thing — <em>the software, the database, the hardware it runs on, and the brand around it.</em> An end-to-end builder from Erbil.</p>
-  <div class="meta">
-    <span>STATUS: <b>OPEN TO WORK</b></span>
-    <span>ROLE: SOFTWARE &amp; TECH-OPS</span>
-    <span>BASE: ERBIL, KURDISTAN</span>
-    <span>LANGS: EN · SV · NO · KU</span>
+  <div class="tagline">
+    <span class="big">Never Stop Building</span>
   </div>
-  <div class="cta">
-    <a class="btn" href="#cv">View my CV</a>
-    <a class="btn ghost" href="https://github.com/SJ2005-code" target="_blank" rel="noopener">GitHub ↗</a>
+  <p class="sub">
+    Most people pick a lane. <strong>Shiar built the whole road.</strong> Software in C#, databases in SQL, lithium battery packs by soldering iron, a hydraulic press by hand, and a restaurant launch end-to-end. Four languages, one obsession: take the idea all the way to the finished thing.
+  </p>
+  <div class="stats">
+    <div class="cell"><div class="num">04<i>+</i></div><div class="lbl">Languages — EN · SV · NO · KU</div></div>
+    <div class="cell"><div class="num">06</div><div class="lbl">Major builds shipped</div></div>
+    <div class="cell"><div class="num">C#<i>/SQL</i></div><div class="lbl">Core stack + hardware</div></div>
+    <div class="cell"><div class="num">1<i>×</i></div><div class="lbl">Builder, end to end</div></div>
   </div>
-  <div class="scroll-hint">scroll ↓</div>
 </header>
 
 <!-- ====== ABOUT ====== -->
 <section id="about">
   <div class="sec-head rv">
-    <span class="num">[ 01 ] — ABOUT_THE_HUMAN</span>
-    <h2>Not just <span>a coder.</span></h2>
-    <div class="rule"></div>
+    <div>
+      <span class="no">01 — THE CLIMB</span>
+      <h2>The route<br>so far.</h2>
+    </div>
+    <span class="alt">FIELD NOTES<br>IT GRADUATE · ERBIL</span>
   </div>
   <div class="about-grid">
     <div class="rv">
-      <p>Some developers hand you a program. Some engineers hand you a machine. <strong>I hand you both.</strong></p>
-      <p>I'm Shiar Fooad Haweez, an IT graduate who has never met a boundary between disciplines. I've designed <em>accounting software in C#</em>, normalized the <em>SQL databases</em> behind it, automated whole workflows with scripts, hand-built <em>lithium battery packs with their own BMS protection</em>, and even constructed a working hydraulic press from scratch.</p>
-      <p>On top of that, I run operations — launching a restaurant's entire brand presence, managing financial tracking systems, and designing the marketing. I speak four languages and I use every one of them.</p>
-      <p><strong>If a problem exists anywhere between a line of code and a physical machine, I'll find a way to fix it.</strong></p>
+      <p class="lead">Some developers hand you a program. Some engineers hand you a machine. <em>Shiar hands you both.</em></p>
+      <p>Shiar Fooad Haweez is an Information Technology graduate from Khabat Technical Institute who never recognized the boundary between software and hardware. He designed <strong>accounting software and a flight management system in C#</strong>, engineered the <strong>normalized SQL Server databases</strong> behind them, automated entire workflows with custom CMD scripts, and assembled <strong>lithium battery packs</strong> complete with BMS protection and charging circuitry.</p>
+      <p>Then he built things that don't plug in at all — a working <strong>hydraulic pump and press</strong>, precision structural woodwork — and ran the operations side of a real business: brand launch, marketing campaigns, financial tracking templates, verified listings, e-commerce.</p>
+      <p><strong>Wherever a problem sits between a line of code and a physical machine, he picks up the tools and finishes the job.</strong></p>
     </div>
-    <div class="about-card rv">
-      <span class="ascii">   ┌──[SJ2005]──┐
-   │  ●  ⚡  ▓  │
-   │  ●  ▓▓  ●  │
-   └────────────┘</span>
-      <div class="row"><span class="k">FULL NAME</span><span class="v">Shiar Fooad Haweez</span></div>
-      <div class="row"><span class="k">HANDLE</span><span class="v">SJ2005</span></div>
-      <div class="row"><span class="k">CLASS</span><span class="v">End-to-End Builder</span></div>
-      <div class="row"><span class="k">EDUCATION</span><span class="v">Diploma, IT — 2026</span></div>
-      <div class="row"><span class="k">MODE</span><span class="v g">EXECUTE</span></div>
-      <div class="row"><span class="k">DISPOSITION</span><span class="v">"Can be built."</span></div>
+    <div class="datasheet rv">
+      <div class="ds-head"><span>SPEC CARD // SJ2005</span><span class="r">REV 2026.09</span></div>
+      <div class="rows">
+        <div class="row"><span class="k">Full name</span><span class="v">Shiar Fooad Haweez</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Software &amp; Tech-Ops</span></div>
+        <div class="row"><span class="k">Basecamp</span><span class="v">Erbil, Kurdistan</span></div>
+        <div class="row"><span class="k">Education</span><span class="v">Dip. IT — Khabat, 2026</span></div>
+        <div class="row"><span class="k">Schools</span><span class="v">IES Länna · Stockholm</span></div>
+        <div class="row"><span class="k">Languages</span><span class="v">EN · SV · NO · KU</span></div>
+        <div class="row"><span class="k">GitHub</span><span class="v">SJ2005-code</span></div>
+        <div class="row"><span class="k">Mode</span><span class="v r">EXECUTING</span></div>
+      </div>
+      <span class="stamp">QC Passed ▲ Built To Ship</span>
     </div>
   </div>
 </section>
 
-<!-- ====== SKILLS ====== -->
+<!-- ====== GEAR / SKILLS ====== -->
 <section id="skills">
   <div class="sec-head rv">
-    <span class="num">[ 02 ] — CAPABILITY_MATRIX</span>
-    <h2>Loaded <span>skillset.</span></h2>
-    <div class="rule"></div>
+    <div>
+      <span class="no">02 — GEAR CHECK</span>
+      <h2>The kit<br>he carries.</h2>
+    </div>
+    <span class="alt">SOFTWARE / AUTOMATION<br>HARDWARE / OPERATIONS</span>
   </div>
-  <div class="skills-cloud rv">
-    <span class="chip"><b>LANG</b>C#</span>
-    <span class="chip"><b>DB</b>SQL / SQL Server</span>
-    <span class="chip"><b>DB</b>SSMS</span>
-    <span class="chip"><b>ML</b>Python · XGBoost</span>
-    <span class="chip"><b>WEB</b>PHP</span>
-    <span class="chip"><b>WEB</b>HTML / CSS</span>
-    <span class="chip"><b>OPS</b>CMD Scripting</span>
-    <span class="chip"><b>HW</b>Battery Packs / BMS</span>
-    <span class="chip"><b>HW</b>TP4056 · Circuits</span>
-    <span class="chip"><b>TOOL</b>Git / GitHub</span>
-    <span class="chip"><b>TOOL</b>VS · VS Code</span>
-    <span class="chip"><b>BIZ</b>Ops &amp; Marketing</span>
-    <span class="chip"><b>BIZ</b>Financial Tracking</span>
-    <span class="chip"><b>DESIGN</b>Branding / Graphics</span>
-  </div>
-  <div class="skill-groups">
-    <div class="sg rv"><h3>// Software</h3><p>Desktop systems in C# &amp; Windows Forms — admin panels, accounting tools, a flight management app. Normalized relational schemas, complex queries, data integrity by habit.</p></div>
-    <div class="sg rv"><h3>// Automation</h3><p>Custom CMD scripts that kill repetitive multi-step work. If I do it twice, it gets automated. Learned that lesson young.</p></div>
-    <div class="sg rv"><h3>// Hardware</h3><p>Lithium battery pack design with BMS, TP4056 charging modules, flyback-diode circuit protection. Also built a functional hydraulic pump/press. With my hands.</p></div>
-    <div class="sg rv"><h3>// Operations</h3><p>Business management, e-commerce (Stripe), verified Google Business listings, brand campaigns and structured financial templates — the systems behind a real business.</p></div>
+  <div class="gear-grid rv">
+    <div class="g">
+      <h3>Software</h3>
+      <div class="sub">// primary layer</div>
+      <p>Desktop systems in C# and Windows Forms — admin panels, accounting tools, a flight management app — each backed by a normalized relational schema.</p>
+      <div class="tag-list"><span>C#</span><span>WinForms</span><span>SQL Server</span><span>SSMS</span><span>PHP</span><span>HTML</span><span>CSS</span><span>Git</span></div>
+    </div>
+    <div class="g">
+      <h3>Automation</h3>
+      <div class="sub">// if done twice, scripted</div>
+      <p>Custom Windows CMD scripts that kill repetitive multi-step work — task automation, system reset protocols, workflow bottlenecks removed for good.</p>
+      <div class="tag-list"><span>CMD</span><span>Scripting</span><span>Workflow Design</span><span>Python</span><span>XGBoost</span></div>
+    </div>
+    <div class="g">
+      <h3>Hardware</h3>
+      <div class="sub">// hands-on layer</div>
+      <p>Lithium battery pack design with BMS, TP4056 charging modules and flyback-diode protection. Hydraulic pumps, presses, precision woodwork — built, not bought.</p>
+      <div class="tag-list"><span>BMS</span><span>TP4056</span><span>Electronics</span><span>Soldering</span><span>Hydraulics</span></div>
+    </div>
+    <div class="g">
+      <h3>Operations</h3>
+      <div class="sub">// the business layer</div>
+      <p>Financial tracking systems, brand management, e-commerce (Stripe), verified Google Business listings, promotional design and social campaigns that launched a restaurant.</p>
+      <div class="tag-list"><span>Branding</span><span>Marketing</span><span>Stripe</span><span>Finances</span><span>Support</span></div>
+    </div>
   </div>
 </section>
 
-<!-- ====== PROJECTS ====== -->
+<!-- ====== EXPEDITIONS / PROJECTS ====== -->
 <section id="projects">
   <div class="sec-head rv">
-    <span class="num">[ 03 ] — BUILD_LOG</span>
-    <h2>Things I've <span>actually built.</span></h2>
-    <div class="rule"></div>
+    <div>
+      <span class="no">03 — EXPEDITION LOG</span>
+      <h2>Things he's<br>actually built.</h2>
+    </div>
+    <span class="alt">SIX ROUTES<br>ALL SUMMITED</span>
   </div>
-  <div class="proj-grid">
-    <article class="proj rv">
-      <span class="corner">PRJ_001</span>
-      <div class="ph"><span class="big">01</span><span class="icon">📈</span></div>
+  <div class="exp-grid">
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-01</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Machine Learning</span>
         <h3>Rossmann Sales Forecasting</h3>
-        <p>End-to-end ML pipeline forecasting store sales with XGBoost — data cleaning, feature engineering, model training and evaluation on Kaggle data. Public on GitHub.</p>
-        <div class="stack"><span>Python</span><span>XGBoost</span><span>Pandas</span><span>Kaggle</span></div>
-        <a href="https://github.com/SJ2005-code" target="_blank" rel="noopener">View repo ↗</a>
+        <p>End-to-end ML pipeline forecasting store sales with XGBoost — data cleaning, feature engineering, training, evaluation on Kaggle data. Public on GitHub.</p>
+        <div class="route"><span>Python</span><span>XGBoost</span><span>Pandas</span><span>Kaggle</span></div>
+        <a href="https://github.com/SJ2005-code" target="_blank" rel="noopener">View the route ↗</a>
       </div>
     </article>
-    <article class="proj rv">
-      <span class="corner">PRJ_002</span>
-      <div class="ph"><span class="big">02</span><span class="icon">⚡</span></div>
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-02</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Hardware Engineering</span>
         <h3>Custom Lithium Battery Packs</h3>
-        <p>Designed and assembled battery packs integrating TP4056 charging modules, Battery Management Systems, and circuit protection logic (flyback diodes). Built to survive real use.</p>
-        <div class="stack"><span>BMS</span><span>TP4056</span><span>Electronics</span><span>Soldering</span></div>
-        <a href="#contact">Ask me about it →</a>
+        <p>Designed and assembled battery packs integrating TP4056 charging modules, BMS, and flyback-diode circuit protection. Built to survive real use.</p>
+        <div class="route"><span>BMS</span><span>TP4056</span><span>Circuits</span><span>Assembly</span></div>
+        <a href="#contact">Ask about the route →</a>
       </div>
     </article>
-    <article class="proj rv">
-      <span class="corner">PRJ_003</span>
-      <div class="ph"><span class="big">03</span><span class="icon">🖥️</span></div>
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-03</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Software Engineering</span>
         <h3>Windows Forms App Suite</h3>
-        <p>Lead developer on functional desktop systems: custom administrative software, accounting tools, and a flight management application — each backed by a normalized SQL Server schema.</p>
-        <div class="stack"><span>C#</span><span>WinForms</span><span>SQL Server</span><span>Visual Studio</span></div>
-        <a href="#cv">See it on my CV →</a>
+        <p>Lead developer on administrative software, accounting tools and a flight management application — each with a normalized SQL Server database behind it.</p>
+        <div class="route"><span>C#</span><span>WinForms</span><span>SQL Server</span><span>VS</span></div>
+        <a href="#cv">See the dossier →</a>
       </div>
     </article>
-    <article class="proj rv">
-      <span class="corner">PRJ_004</span>
-      <div class="ph"><span class="big">04</span><span class="icon">🛠️</span></div>
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-04</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Mechanical Engineering</span>
         <h3>Hydraulic Pump &amp; Press</h3>
-        <p>Independently constructed functional hydraulic pumps and a press, plus precision structural woodworking. Spatial intelligence applied the old-fashioned way.</p>
-        <div class="stack"><span>Hydraulics</span><span>Fabrication</span><span>Engineering</span></div>
-        <a href="#contact">Ask me about it →</a>
+        <p>Independently constructed functional hydraulic pumps and a press, plus precision structural woodworking. Spatial intelligence, applied by hand.</p>
+        <div class="route"><span>Hydraulics</span><span>Fabrication</span><span>Woodwork</span></div>
+        <a href="#contact">Ask about the route →</a>
       </div>
     </article>
-    <article class="proj rv">
-      <span class="corner">PRJ_005</span>
-      <div class="ph"><span class="big">05</span><span class="icon">🎓</span></div>
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-05</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Database Systems</span>
         <h3>Graduation Database Project</h3>
-        <p>Engineered a complete database solution for official evaluation at Khabat Technical Institute — complex SQL queries, views, and data maintenance procedures.</p>
-        <div class="stack"><span>SQL</span><span>SSMS</span><span>Schema Design</span></div>
-        <a href="#cv">See education →</a>
+        <p>A complete database solution for official evaluation at Khabat Technical Institute — complex SQL queries, views, and maintenance procedures.</p>
+        <div class="route"><span>SQL</span><span>SSMS</span><span>Schema Design</span></div>
+        <a href="#cv">See the dossier →</a>
       </div>
     </article>
-    <article class="proj rv">
-      <span class="corner">PRJ_006</span>
-      <div class="ph"><span class="big">06</span><span class="icon">🚀</span></div>
+    <article class="exp rv">
+      <div class="exp-head"><span class="id">LOG // EXP-06</span><span class="flag"></span></div>
       <div class="body">
         <span class="cat">Brand &amp; Operations</span>
         <h3>NORDO Restaurant Launch</h3>
-        <p>Ran the operational side of a restaurant's grand launch: promotional design, visual branding, social media campaigns, internal financial tracking templates, and the verified Google Business Profile.</p>
-        <div class="stack"><span>Branding</span><span>Marketing</span><span>Ops</span><span>Stripe</span></div>
-        <a href="#cv">See experience →</a>
+        <p>The operational spine of a grand launch: promotional design, visual branding, social campaigns, financial tracking templates, verified Google Business Profile.</p>
+        <div class="route"><span>Branding</span><span>Marketing</span><span>Ops</span><span>Stripe</span></div>
+        <a href="#cv">See the dossier →</a>
       </div>
     </article>
   </div>
@@ -466,13 +469,15 @@ footer a:hover{color:var(--green)}
 <!-- ====== CV ====== -->
 <section id="cv">
   <div class="sec-head rv">
-    <span class="num">[ 04 ] — FULL_DOSSIER</span>
-    <h2>The official <span>CV.</span></h2>
-    <div class="rule"></div>
+    <div>
+      <span class="no">04 — THE DOSSIER</span>
+      <h2>Official<br>CV.</h2>
+    </div>
+    <span class="alt">RECRUITER EDITION<br>PRINT-READY</span>
   </div>
   <div class="cv-wrap rv">
     <div class="cv-top">
-      <span class="t">CV — SHIAR F. HAWEEZ — 2026.09</span>
+      <span class="t">DOSSIER // <b>SHIAR F. HAWEEZ</b> // 2026.09</span>
       <span class="a">
         <button class="mini-btn primary" onclick="window.print()">⤓ Print / Save as PDF</button>
         <a class="mini-btn" href="mailto:shiar.mohammad.2005@gmail.com">Email me</a>
@@ -487,7 +492,7 @@ footer a:hover{color:var(--green)}
         <span><a href="https://github.com/SJ2005-code" target="_blank" rel="noopener">github.com/SJ2005-code</a></span>
         <span>Erbil, Kurdistan</span>
       </div>
-      <div class="langs"><b>Languages:</b> English (Fluent) · Swedish (Fluent) · Norwegian (Fluent) · Kurdish (Native)</div>
+      <div class="langs"><strong>Languages:</strong> English (Fluent) · Swedish (Fluent) · Norwegian (Fluent) · Kurdish (Native)</div>
 
       <h4>Professional Profile</h4>
       <p>Adaptable, execution-focused Information Technology graduate with a strong foundation in full-stack desktop software development, relational database architecture, and hardware–software integration. Proven track record of building end-to-end applications, automating multi-step workflows, and managing business operations. Combines C#, SQL, and scripting proficiency with practical engineering skills and multilingual, cross-functional communication.</p>
@@ -498,7 +503,7 @@ footer a:hover{color:var(--green)}
         <li><strong>Databases &amp; Systems:</strong> SQL, SQL Server Management Studio (SSMS), relational schema design, data validation</li>
         <li><strong>Scripting &amp; Automation:</strong> Windows CMD scripting, task automation, system reset protocols</li>
         <li><strong>Hardware &amp; Engineering:</strong> Embedded systems, Battery Management Systems (BMS), microcontrollers, electronics assembly</li>
-        <li><strong>Business Operations:</strong> financial tracking, promotional graphic design, brand management, multi-channel customer support</li>
+        <li><strong>Business Operations:</strong> Financial tracking, promotional graphic design, brand management, multi-channel customer support</li>
       </ul>
 
       <h4>Technical Projects</h4>
@@ -567,102 +572,51 @@ footer a:hover{color:var(--green)}
   </div>
 </section>
 
-<!-- ====== CONTACT ====== -->
+<!-- ====== SUMMIT / CONTACT ====== -->
 <section id="contact">
-  <div class="sec-head rv">
-    <span class="num">[ 05 ] — OPEN_CHANNEL</span>
-    <h2>Reach the <span>operator.</span></h2>
-    <div class="rule"></div>
-  </div>
+  <div class="summit rv">HIRE THE GUY<br><span class="o">WHO </span><span class="r">BUILDS</span> IT ALL.</div>
   <div class="contact-grid">
     <a class="cbox rv" href="mailto:shiar.mohammad.2005@gmail.com">
-      <span class="ic">✉️</span>
+      <div class="ic">✉️</div>
       <span class="lbl">Email</span>
       <span class="val">shiar.mohammad.2005@gmail.com</span>
     </a>
     <a class="cbox rv" href="https://wa.me/9647518833032" target="_blank" rel="noopener">
-      <span class="ic">💬</span>
+      <div class="ic">💬</div>
       <span class="lbl">WhatsApp</span>
       <span class="val">+964 751 883 3032</span>
     </a>
     <a class="cbox rv" href="https://github.com/SJ2005-code" target="_blank" rel="noopener">
-      <span class="ic">⌨</span>
+      <div class="ic">⌨</div>
       <span class="lbl">GitHub</span>
       <span class="val">github.com/SJ2005-code</span>
     </a>
     <a class="cbox rv" href="tel:+9647518833032">
-      <span class="ic">📞</span>
+      <div class="ic">📞</div>
       <span class="lbl">Phone</span>
       <span class="val">+964 751 883 3032</span>
     </a>
   </div>
-  <div class="bigline" id="bigline">HIRE&nbsp;THE&nbsp;GUY&nbsp;WHO&nbsp;BUILDS&nbsp;IT&nbsp;ALL.</div>
 </section>
 
 <footer>
-  <span>© 2026 SHIAR F. HAWEEZ — SJ2005.SYS</span>
-  <span>ERBIL, KURDISTAN · 36.19°N 44.01°E · <a href="mailto:shiar.mohammad.2005@gmail.com">MAIL</a> · <a href="https://github.com/SJ2005-code">GITHUB</a></span>
+  <span><span class="tri"></span>© 2026 SHIAR F. HAWEEZ — SJ2005</span>
+  <span>ERBIL · KURDISTAN &nbsp; <a href="mailto:shiar.mohammad.2005@gmail.com">MAIL</a> · <a href="https://github.com/SJ2005-code">GITHUB</a></span>
 </footer>
 
+</div>
+
 <script>
-/* ---------- boot sequence ---------- */
+/* duplicate marquee content for seamless loop */
 (function(){
-  const lines = [
-    "SJ2005.SYS bootloader v2.0 ................ OK",
-    "mounting /skills/software ................ <span class='ok'>OK</span>",
-    "mounting /skills/hardware ................ <span class='ok'>OK</span>",
-    "loading language_pack [en,sv,no,ku] ...... <span class='ok'>OK</span>",
-    "warning: candidate exceeds one_category ... <span class='warn'>EXPECTED</span>",
-    "deploying personality module ............. <span class='ok'>DONE</span>",
-    "starting SHIAR_FAWAD.EXE ................. <span class='ok'>RUNNING</span>"
-  ];
-  const log = document.getElementById('bootlog');
-  const pct = document.getElementById('bootpct');
-  let i = 0;
-  const t = setInterval(()=>{
-    if(i < lines.length){
-      log.innerHTML += "> " + lines[i] + "\n";
-      i++;
-    } else {
-      clearInterval(t);
-      setTimeout(()=>{ document.getElementById('boot').classList.add('done'); }, 500);
-    }
-  }, 320);
-  let p = 0;
-  const pt = setInterval(()=>{
-    p = Math.min(100, p + Math.random()*9);
-    pct.textContent = Math.floor(p) + "%";
-    if(p >= 100) clearInterval(pt);
-  }, 180);
+  const t = document.getElementById('track');
+  t.innerHTML += t.innerHTML;
 })();
-
-/* ---------- clock ---------- */
-setInterval(()=>{
-  const n = new Date();
-  document.getElementById('clock').textContent =
-    String(n.getHours()).padStart(2,'0')+":"+String(n.getMinutes()).padStart(2,'0')+":"+String(n.getSeconds()).padStart(2,'0');
-},1000);
-
-/* ---------- torch cursor ---------- */
-const torch = document.getElementById('torch');
-window.addEventListener('pointermove', e=>{
-  torch.style.left = e.clientX+'px';
-  torch.style.top = e.clientY+'px';
-});
-
-/* ---------- scroll reveal ---------- */
+/* scroll reveal */
 const io = new IntersectionObserver(entries=>{
   entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
-},{threshold:.12});
+},{threshold:.1});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
-
-/* ---------- random glitch on hero occasionally ---------- */
-setInterval(()=>{
-  document.querySelectorAll('.glitch .g').forEach(el=>{
-    el.style.textShadow = "3px 0 var(--red), -3px 0 var(--cyan)";
-    setTimeout(()=>{ el.style.textShadow = "none"; }, 120);
-  });
-}, 4000);
 </script>
 </body>
 </html>
